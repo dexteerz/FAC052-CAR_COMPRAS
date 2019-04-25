@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1053638359849",
+    "firebase_url": "https://car-compras-f8b63.firebaseio.com",
+    "project_id": "car-compras-f8b63",
+    "storage_bucket": "car-compras-f8b63.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1053638359849:android:7ecf37968078acf8",
+        "android_client_info": {
+          "package_name": "com.dex.car_compras"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1053638359849-3vajr8m0ih05h2bilqithfv2mbjab0ui.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dex.car_compras",
+            "certificate_hash": "a4c9074716e4ec4679b56bc0f9c907f7036d7eb5"
+          }
+        },
+        {
+          "client_id": "1053638359849-99to89cjgpvhgioa4d80tiq9eamj0cnv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLfQPZRe_kOnnFQ3-iTqWIAup_2Y3x8xk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1053638359849-99to89cjgpvhgioa4d80tiq9eamj0cnv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
