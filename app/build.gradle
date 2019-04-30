@@ -24,6 +24,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.1.0'
     implementation 'com.google.firebase:firebase-auth:16.2.1'
 
+    //OUTROS
+    implementation 'com.heinrichreimersoftware:material-intro:1.6'
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:27.1.1'
