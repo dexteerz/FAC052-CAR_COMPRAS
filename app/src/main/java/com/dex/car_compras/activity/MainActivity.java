@@ -1,11 +1,10 @@
-package com.dex.car_compras;
+package com.dex.car_compras.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.dex.car_compras.activity.CadastroActivity;
-import com.dex.car_compras.activity.LoginActivity;
+import com.dex.car_compras.R;
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
 
@@ -16,7 +15,7 @@ public class MainActivity extends IntroActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
 
-        setButtonBackVisible(false);
+        //setButtonBackVisible(false);
         setButtonNextVisible(false);
 
         addSlide(new FragmentSlide.Builder()
@@ -38,19 +37,19 @@ public class MainActivity extends IntroActivity {
         );
 
         addSlide(new FragmentSlide.Builder()
-                .background(android.R.color.white)
+                .background(android.R.color.primary_text_dark)
                 .canGoForward(false)
                 .canGoBackward(false)
-                .fragment(R.layout.intro_cadastro)
+                .fragment(R.layout.intro)
                 .build()
         );
     }
 
-    public void btEntrar(View view){
+    public void btEnter(View view){
         startActivity(new Intent(this, LoginActivity.class));
     }
 
-    public void btCadastrar(View view){
-        startActivity(new Intent(this, CadastroActivity.class));
+    public void btRegister(View view){
+        startActivity(new Intent(this, RegisterActivity.class));
     }
 }
