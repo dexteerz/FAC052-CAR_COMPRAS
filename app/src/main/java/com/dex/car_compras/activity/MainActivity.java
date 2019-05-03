@@ -5,10 +5,14 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.dex.car_compras.R;
+import com.dex.car_compras.config.AuthConfig;
+import com.google.firebase.auth.FirebaseAuth;
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
 
 public class MainActivity extends IntroActivity {
+
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +49,28 @@ public class MainActivity extends IntroActivity {
         );
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        verifyLoginUser();
+    }
+
     public void btEnter(View view){
         startActivity(new Intent(this, LoginActivity.class));
     }
 
     public void btRegister(View view){
         startActivity(new Intent(this, RegisterActivity.class));
+    }
+
+    public void verifyLoginUser(){
+        auth = AuthConfig.getAuth();
+        if(auth.getCurrentUser() != null){
+            openHomeActivity();
+        }
+    }
+
+    public void openHomeActivity() {
+        startActivity(new Intent(this, HomeActivity.class));
     }
 }

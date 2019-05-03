@@ -1,5 +1,6 @@
 package com.dex.car_compras.activity;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 public class RegisterActivity extends AppCompatActivity {
     private EditText fieldName;
@@ -37,50 +41,80 @@ public class RegisterActivity extends AppCompatActivity {
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                connectUser();
+                newUser();
             }
         });
     }
 
-
-    public void connectUser(){
+    // CONNECT USER FOR FIREBASE
+    public void newUser() {
         String textName = fieldName.getText().toString();
         String textEmail = fieldEmail.getText().toString();
         String textPass = fieldPass.getText().toString();
 
-        if(!textEmail.isEmpty()){
-            if(!textEmail.isEmpty()){
-                if (!textPass.isEmpty()){
+        if (!textName.isEmpty()) {
+            if (!textEmail.isEmpty()) {
+                if (!textPass.isEmpty()) {
                     user = new User();
                     user.setName(textName);
                     user.setEmail(textEmail);
                     user.setPass(textPass);
-                    newUser();
+
+                    validateNewUser();
                 } else {
-                    Toast.makeText(RegisterActivity.this, "Preencha a senha!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this,
+                            "Preencha o campo senha",
+                            Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(RegisterActivity.this, "Preencha o email!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this,
+                        "Preencha o campo e-mail",
+                        Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(RegisterActivity.this, "Preencha o nome!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RegisterActivity.this,
+                    "Preencha o campo nome",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void newUser(){
+    public void validateNewUser(){
         auth = AuthConfig.getAuth();
         auth.createUserWithEmailAndPassword(
                 user.getEmail(), user.getPass()
         ).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Toast.makeText(RegisterActivity.this, "Usuário cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+                if (task.isSuccessful()) {
+                    Toast.makeText(RegisterActivity.this,
+                            "Usuário cadastrado com sucesso!",
+                            Toast.LENGTH_SHORT).show();
+                    finish();
                 } else {
-
-                    Toast.makeText(RegisterActivity.this, "Erro ao cadastrar usuário", Toast.LENGTH_SHORT).show();
+                    // EXCEPTION ERROS NEWUSER
+                    exceptionsErro(task);
                 }
             }
         });
     }
+
+    public void exceptionsErro(@NonNull Task<AuthResult> task) {
+        String exception = "";
+        try {
+            throw task.getException();
+        } catch (FirebaseAuthWeakPasswordException e) {
+            exception = "Digite uma senha mais forte";
+        } catch (FirebaseAuthInvalidCredentialsException e) {
+            exception = "Digite um e-mail válido";
+        } catch (FirebaseAuthUserCollisionException e) {
+            exception = "Conta já cadastrado, tente cadastrar outra conta";
+        } catch (Exception e) {
+            exception = "Erro ao cadastrar o usuário: " + e.getMessage();
+            e.printStackTrace();
+        }
+        Toast.makeText(RegisterActivity.this,
+                exception,
+                Toast.LENGTH_SHORT).show();
+    }
+
 }
