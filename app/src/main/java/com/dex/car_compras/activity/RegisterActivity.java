@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import com.dex.car_compras.config.AuthConfig;
 import com.dex.car_compras.R;
+import com.dex.car_compras.helper.Base64Custom;
 import com.dex.car_compras.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -78,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    public void validateNewUser(){
+    public void validateNewUser() {
         auth = AuthConfig.getAuth();
         auth.createUserWithEmailAndPassword(
                 user.getEmail(), user.getPass()
@@ -89,6 +91,9 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this,
                             "Usuário cadastrado com sucesso!",
                             Toast.LENGTH_SHORT).show();
+                    String idUser = Base64Custom.condifyBase64(user.getEmail());
+                    user.setIdUser(idUser);
+                    user.save();
                     finish();
                 } else {
                     // EXCEPTION ERROS NEWUSER

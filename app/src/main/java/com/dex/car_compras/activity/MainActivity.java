@@ -65,6 +65,7 @@ public class MainActivity extends IntroActivity {
 
     public void verifyLoginUser(){
         auth = AuthConfig.getAuth();
+        //auth.signOut();
         if(auth.getCurrentUser() != null){
             openHomeActivity();
         }
