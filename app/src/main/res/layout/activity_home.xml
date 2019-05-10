@@ -64,7 +64,7 @@
         fab:menu_shadowXOffset="1dp"
         fab:menu_shadowYOffset="3dp"
         fab:menu_showShadow="true">
-        <!--
+
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/menu_item_createlist"
             android:onClick="createList"
@@ -73,7 +73,7 @@
             android:src="@drawable/ic_add_newlist_24dp"
             fab:fab_label="Criar lista de compras"
             fab:fab_size="mini" />
-        -->
+
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/menu_item_addlist"
             android:onClick="addList"
