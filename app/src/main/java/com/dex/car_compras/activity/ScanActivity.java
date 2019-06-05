@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -15,6 +16,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.dex.car_compras.config.AuthConfig;
+import com.dex.car_compras.model.Product;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -26,6 +35,9 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
     private static final int REQUEST_CAMERA = 1;
     private ZXingScannerView scannerView;
     private static int camId = Camera.CameraInfo.CAMERA_FACING_BACK;
+    private Product product = new Product();
+    private DatabaseReference firebase = FirebaseDatabase.getInstance().getReference();
+    String value, name, category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,23 +130,62 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
     }
 
     @Override
-    public void handleResult(Result result) {
+    public void handleResult(final Result result) {
 
         final String myResult = result.getText();
         Log.d("QRCodeScanner", result.getText());
         Log.d("QRCodeScanner", result.getBarcodeFormat().toString());
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("RESULTADO: ");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        // CONECTA COM O BANCO E BUSCA O VALOR DO CÓDIGO SCANNEADO DENTRO DO NÓ "PRODUCTS"
+        firebase.child("products").child(myResult).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                scannerView.resumeCameraPreview(ScanActivity.this);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                product = dataSnapshot.getValue(Product.class);
+
+                if (product == null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ScanActivity.this);
+                    builder.setTitle("RESULTADO: ");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            scannerView.resumeCameraPreview(ScanActivity.this);
+                        }
+                    });
+                    builder.setMessage("Produto não cadastrado");
+                    AlertDialog alert1 = builder.create();
+                    alert1.show();
+
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ScanActivity.this);
+                    builder.setTitle("RESULTADO: " + result.getText());
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            scannerView.resumeCameraPreview(ScanActivity.this);
+                        }
+                    });
+                    builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            scannerView.resumeCameraPreview(ScanActivity.this);
+                        }
+                    });
+
+                    builder.setMessage("Produto: " + product.getName() + "\nValor R$ " +
+                            product.getValue() + "\nCategoria: " + product.getCategory());
+                    AlertDialog alert1 = builder.create();
+                    alert1.show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(ScanActivity.this,
+                        "PRODUTO NÃO ENCONTRADO",
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
-        builder.setMessage(result.getText());
-        AlertDialog alert1 = builder.create();
-        alert1.show();
     }
 }
