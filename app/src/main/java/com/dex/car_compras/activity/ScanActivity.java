@@ -1,6 +1,5 @@
 package com.dex.car_compras.activity;
 
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,19 +14,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-
-import com.dex.car_compras.config.AuthConfig;
 import com.dex.car_compras.model.Product;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.Result;
-
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
-
 import static android.Manifest.permission.CAMERA;
 
 public class ScanActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
@@ -37,6 +31,7 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
     private static int camId = Camera.CameraInfo.CAMERA_FACING_BACK;
     private Product product = new Product();
     private DatabaseReference firebase = FirebaseDatabase.getInstance().getReference();
+    // PENSANDO COMO USAR TAIS VARIAVEIS
     String value, name, category;
 
     @Override
@@ -96,9 +91,13 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
 
                     boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     if (cameraAccepted) {
-                        Toast.makeText(getApplicationContext(), "Permissão concedida, agora você pode acessar a câmera", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),
+                                "Permissão concedida, agora você pode acessar a câmera",
+                                Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(getApplicationContext(), "Permissão negada, você não pode acessar e câmera", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),
+                                "Permissão negada, você não pode acessar e câmera",
+                                Toast.LENGTH_LONG).show();
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             if (shouldShowRequestPermissionRationale(CAMERA)) {
                                 showMessageOKCancel("Você precisa permitir o acesso a ambas as permissões",
@@ -131,7 +130,6 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
 
     @Override
     public void handleResult(final Result result) {
-
         final String myResult = result.getText();
         Log.d("QRCodeScanner", result.getText());
         Log.d("QRCodeScanner", result.getBarcodeFormat().toString());
@@ -177,13 +175,23 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
                     alert1.show();
                 }
 
+                // ADICIONAR SCRIPT PARA VOLTAR PARA ACTIVITY CREATELISTACTIVITY E ADICIONAR EM UMA LISTA
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(ScanActivity.this,
-                        "PRODUTO NÃO ENCONTRADO",
-                        Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(ScanActivity.this);
+                builder.setTitle("ERRO: ");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        scannerView.resumeCameraPreview(ScanActivity.this);
+                    }
+                });
+                builder.setMessage(databaseError.getMessage());
+                AlertDialog alert1 = builder.create();
+                alert1.show();
             }
         });
 
