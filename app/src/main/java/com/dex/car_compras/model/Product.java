@@ -9,14 +9,12 @@ public class Product {
     private String name;
     private String category;
     private double value;
+    private int amount = 1;
 
     final FirebaseDatabase databse = FirebaseDatabase.getInstance();
     DatabaseReference ref = databse.getReference("products");
 
-    public void Product(String name, String category, double value){
-        setName(name);
-        setCategory(category);
-        setValue(value);
+    public void Product() {
     }
 
     @Exclude
@@ -50,5 +48,13 @@ public class Product {
 
     public void setValue(double value) {
         this.value = value;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 }
