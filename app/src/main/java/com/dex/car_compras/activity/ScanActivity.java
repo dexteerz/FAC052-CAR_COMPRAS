@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
 import com.dex.car_compras.model.Product;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,7 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.Result;
+
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
+
 import static android.Manifest.permission.CAMERA;
 
 public class ScanActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
@@ -29,7 +32,7 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
     private static final int REQUEST_CAMERA = 1;
     private ZXingScannerView scannerView;
     private static int camId = Camera.CameraInfo.CAMERA_FACING_BACK;
-    private Product product = new Product();
+    //private Product product = new Product();
     private DatabaseReference firebase = FirebaseDatabase.getInstance().getReference();
     // PENSANDO COMO USAR TAIS VARIAVEIS
     String value, name, category;
@@ -128,12 +131,13 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
                 .show();
     }
 
+    //
     @Override
     public void handleResult(final Result result) {
         final String myResult = result.getText();
         Log.d("QRCodeScanner", result.getText());
         Log.d("QRCodeScanner", result.getBarcodeFormat().toString());
-
+        /*
         // CONECTA COM O BANCO E BUSCA O VALOR DO CÓDIGO SCANNEADO DENTRO DO NÓ "PRODUCTS"
         firebase.child("products").child(myResult).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -194,6 +198,7 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
                 alert1.show();
             }
         });
+        */
 
     }
 }

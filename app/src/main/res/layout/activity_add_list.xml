@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimaryDark"
     tools:context=".activity.AddListActivity">
 
@@ -12,8 +12,8 @@
         android:layout_width="0dp"
         android:layout_height="120dp"
         android:background="@color/colorPrimary"
-        android:orientation="vertical"
         android:gravity="center"
+        android:orientation="vertical"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/totalValueProd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
@@ -35,12 +35,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:layout_marginTop="120dp"
+        <ListView
             android:id="@+id/recycler_view_layour_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/row_item_menu"/>
+            android:layout_marginTop="120dp" />
 
         <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/menu"
@@ -88,8 +87,8 @@
                 android:id="@+id/closeList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:fab_colorNormal="#E75043"
                 android:src="@drawable/ic_close_24dp"
+                app:fab_colorNormal="#E75043"
                 fab:fab_label="Sair"
                 fab:fab_size="mini" />
 
@@ -97,16 +96,16 @@
                 android:id="@+id/saveList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:fab_colorNormal="@color/colorPrimary"
                 android:src="@drawable/ic_save_24dp"
+                app:fab_colorNormal="@color/colorPrimary"
                 fab:fab_label="Salvar"
                 fab:fab_size="mini" />
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/addScanList"
-                android:onClick="addScan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="addScan"
                 android:src="@drawable/ic_add_scan_24dp"
                 fab:fab_label="Novo"
                 fab:fab_size="mini" />

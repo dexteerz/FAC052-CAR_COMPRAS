@@ -4,6 +4,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+
 public class Product {
     private int barCode;
     private String name;
@@ -14,7 +16,11 @@ public class Product {
     final FirebaseDatabase databse = FirebaseDatabase.getInstance();
     DatabaseReference ref = databse.getReference("products");
 
-    public void Product() {
+    public Product(String n, String c, Double v, int a) {
+        this.name = n;
+        this.category = c;
+        this.value = v;
+        this.amount = a;
     }
 
     @Exclude
@@ -56,5 +62,13 @@ public class Product {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public static ArrayList<Product> getProds() {
+        ArrayList<Product> prods = new ArrayList<>();
+        prods.add(new Product("Sabão", "Limpeza", 5.0, 3));
+        prods.add(new Product("Sabonete", "Limpeza", 3.5, 5));
+        prods.add(new Product("Saco de pão", "Alimpento", 5.5, 2));
+        return prods;
     }
 }
