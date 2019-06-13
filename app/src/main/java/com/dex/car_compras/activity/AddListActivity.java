@@ -51,7 +51,7 @@ public class AddListActivity extends AppCompatActivity {
         total = 0;
 
         for (int i = 0; i < arrayList.size(); i++){
-            total = total + arrayList.get(i).getAmount() * arrayList.get(1).getValue();
+            total = total + arrayList.get(i).getAmount() * arrayList.get(i).getValue();
         }
 
         tTotal.setText("R$ " + total);

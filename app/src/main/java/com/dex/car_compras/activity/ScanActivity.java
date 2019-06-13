@@ -32,7 +32,7 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
     private static final int REQUEST_CAMERA = 1;
     private ZXingScannerView scannerView;
     private static int camId = Camera.CameraInfo.CAMERA_FACING_BACK;
-    //private Product product = new Product();
+    private Product product = new Product();
     private DatabaseReference firebase = FirebaseDatabase.getInstance().getReference();
     // PENSANDO COMO USAR TAIS VARIAVEIS
     String value, name, category;
@@ -137,7 +137,7 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
         final String myResult = result.getText();
         Log.d("QRCodeScanner", result.getText());
         Log.d("QRCodeScanner", result.getBarcodeFormat().toString());
-        /*
+
         // CONECTA COM O BANCO E BUSCA O VALOR DO CÓDIGO SCANNEADO DENTRO DO NÓ "PRODUCTS"
         firebase.child("products").child(myResult).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -164,6 +164,9 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             scannerView.resumeCameraPreview(ScanActivity.this);
+                            product.setProds(product.getName(),product.getCategory(),product.getValue(),1);
+                            scannerView.stopCameraPreview();
+                            finish();
                         }
                     });
                     builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -198,7 +201,6 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
                 alert1.show();
             }
         });
-        */
 
     }
 }

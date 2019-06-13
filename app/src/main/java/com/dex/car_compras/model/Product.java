@@ -4,17 +4,23 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Product {
-    private int barCode;
+public class Product implements Serializable {
+    private String barCode;
     private String name;
     private String category;
     private double value;
     private int amount = 1;
+    public static ArrayList<Product> prods = new ArrayList<>();
 
-    final FirebaseDatabase databse = FirebaseDatabase.getInstance();
-    DatabaseReference ref = databse.getReference("products");
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference ref = database.getReference("products");
+
+    public Product(){
+
+    }
 
     public Product(String n, String c, Double v, int a) {
         this.name = n;
@@ -24,11 +30,11 @@ public class Product {
     }
 
     @Exclude
-    public int getBarCode() {
+    public String getBarCode() {
         return barCode;
     }
 
-    public void setBarCode(int barCode) {
+    public void setBarCode(String barCode) {
         this.barCode = barCode;
     }
 
@@ -65,10 +71,11 @@ public class Product {
     }
 
     public static ArrayList<Product> getProds() {
-        ArrayList<Product> prods = new ArrayList<>();
-        prods.add(new Product("Sabão", "Limpeza", 5.0, 3));
-        prods.add(new Product("Sabonete", "Limpeza", 3.5, 5));
-        prods.add(new Product("Saco de pão", "Alimpento", 5.5, 2));
         return prods;
     }
+
+    public void setProds(String n, String c, Double v, int a){
+        prods.add(new Product(n,c,v,a));
+    }
+
 }
