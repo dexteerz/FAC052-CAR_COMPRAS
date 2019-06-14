@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
-import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -34,8 +33,6 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
     private static int camId = Camera.CameraInfo.CAMERA_FACING_BACK;
     private Product product = new Product();
     private DatabaseReference firebase = FirebaseDatabase.getInstance().getReference();
-    // PENSANDO COMO USAR TAIS VARIAVEIS
-    String value, name, category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,31 +141,23 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 product = dataSnapshot.getValue(Product.class);
 
-                if (product == null) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(ScanActivity.this);
-                    builder.setTitle("RESULTADO: ");
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            scannerView.resumeCameraPreview(ScanActivity.this);
-                        }
-                    });
-                    builder.setMessage("Produto não cadastrado");
-                    AlertDialog alert1 = builder.create();
-                    alert1.show();
-
-                } else {
+                if (product != null) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ScanActivity.this);
                     builder.setTitle("RESULTADO: " + result.getText());
+
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             scannerView.resumeCameraPreview(ScanActivity.this);
-                            product.setProds(product.getName(),product.getCategory(),product.getValue(),1);
+                            product.setProds(myResult, product.getName(),product.getCategory(),product.getValue(),1);
                             scannerView.stopCameraPreview();
+
+                            Intent returnIntent = new Intent();
+                            setResult(RESULT_CANCELED, returnIntent);
                             finish();
                         }
                     });
+                    // CANCELA O PRODUTO SCANNEADO
                     builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -180,9 +169,21 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
                             product.getValue() + "\nCategoria: " + product.getCategory());
                     AlertDialog alert1 = builder.create();
                     alert1.show();
-                }
 
-                // ADICIONAR SCRIPT PARA VOLTAR PARA ACTIVITY CREATELISTACTIVITY E ADICIONAR EM UMA LISTA
+                } else {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ScanActivity.this);
+                    builder.setTitle("RESULTADO: ");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            scannerView.resumeCameraPreview(ScanActivity.this);
+                        }
+                    });
+                    builder.setMessage("Produto não cadastrado");
+                    AlertDialog alert1 = builder.create();
+                    alert1.show();
+                }
 
             }
 

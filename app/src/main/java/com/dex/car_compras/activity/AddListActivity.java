@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class AddListActivity extends AppCompatActivity {
     private TextView fieldDate;
-        // TESTES
+    // TESTES
     private double total = 0;
     private ListView listProd;
     private TextView nomeProd, valueSub, valueAmount, amount;
@@ -33,9 +33,6 @@ public class AddListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_list);
-
-        fieldDate = findViewById(R.id.dateNow);
-        fieldDate.setText(DateUtil.dateNow());
 
         populateList();
     }
@@ -50,7 +47,7 @@ public class AddListActivity extends AppCompatActivity {
         TextView tTotal = findViewById(R.id.totalValueProd);
         total = 0;
 
-        for (int i = 0; i < arrayList.size(); i++){
+        for (int i = 0; i < arrayList.size(); i++) {
             total = total + arrayList.get(i).getAmount() * arrayList.get(i).getValue();
         }
 
@@ -59,6 +56,15 @@ public class AddListActivity extends AppCompatActivity {
 
 
     public void addScan(View view) {
-        startActivity(new Intent(this, ScanActivity.class));
+        Intent i = new Intent(this, ScanActivity.class);
+        startActivityForResult(i, 1);
     }
+
+    @Override
+    public void onResume() {  // After a pause OR at startup
+        super.onResume();
+
+        populateList();
+    }
+
 }

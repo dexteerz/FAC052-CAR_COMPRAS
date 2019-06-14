@@ -22,7 +22,8 @@ public class Product implements Serializable {
 
     }
 
-    public Product(String n, String c, Double v, int a) {
+    public Product(String cod, String n, String c, Double v, int a) {
+        this.barCode = cod;
         this.name = n;
         this.category = c;
         this.value = v;
@@ -74,8 +75,8 @@ public class Product implements Serializable {
         return prods;
     }
 
-    public void setProds(String n, String c, Double v, int a){
-        prods.add(new Product(n,c,v,a));
+    public void setProds(String cod, String n, String c, Double v, int a){
+        prods.add(new Product(cod, n,c,v,a));
     }
 
 }
