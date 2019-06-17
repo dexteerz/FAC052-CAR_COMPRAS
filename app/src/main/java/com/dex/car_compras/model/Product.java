@@ -18,7 +18,7 @@ public class Product implements Serializable {
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference ref = database.getReference("products");
 
-    public Product(){
+    public Product() {
 
     }
 
@@ -71,12 +71,19 @@ public class Product implements Serializable {
         this.amount = amount;
     }
 
-    public static ArrayList<Product> getProds() {
+    public static ArrayList<Product> listProds() {
         return prods;
     }
 
-    public void setProds(String cod, String n, String c, Double v, int a){
-        prods.add(new Product(cod, n,c,v,a));
+    public void newProds(String cod, String n, String c, Double v, int a) {
+        prods.add(new Product(cod, n, c, v, a));
     }
 
+    public void updateProds(int i, int a) {
+        prods.get(i).setAmount(a);
+    }
+
+    public static void setProds(ArrayList<Product> prods) {
+        Product.prods = prods;
+    }
 }

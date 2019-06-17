@@ -18,15 +18,16 @@ import com.dex.car_compras.model.User;
 
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
 public class AddListActivity extends AppCompatActivity {
+    private static DecimalFormat round = new DecimalFormat("##.##");
     private TextView fieldDate;
-    // TESTES
+    private TextView tTotal;
     private double total = 0;
-    private ListView listProd;
-    private TextView nomeProd, valueSub, valueAmount, amount;
+    // TESTES
     private ImageButton moreBtn, lessBtn, deleteBtn;
 
     @Override
@@ -37,34 +38,40 @@ public class AddListActivity extends AppCompatActivity {
         populateList();
     }
 
-    private void populateList() {
-        ArrayList<Product> arrayList = Product.getProds();
-        CustomProdAdapter adapter = new CustomProdAdapter(this, arrayList);
-
-        ListView listView = findViewById(R.id.recycler_view_layour_recycler);
-        listView.setAdapter(adapter);
-
-        TextView tTotal = findViewById(R.id.totalValueProd);
-        total = 0;
-
-        for (int i = 0; i < arrayList.size(); i++) {
-            total = total + arrayList.get(i).getAmount() * arrayList.get(i).getValue();
-        }
-
-        tTotal.setText("R$ " + total);
+    @Override
+    public void onResume() {  // After a pause OR at startup
+        super.onResume();
+        populateList();
     }
-
 
     public void addScan(View view) {
         Intent i = new Intent(this, ScanActivity.class);
         startActivityForResult(i, 1);
     }
 
-    @Override
-    public void onResume() {  // After a pause OR at startup
-        super.onResume();
+    public void updateTotal(double total) {
+        this.total = 0;
+        tTotal.setText("R$ " + round.format(total));
+    }
 
-        populateList();
+    private void populateList() {
+        ArrayList<Product> arrayList = Product.listProds();
+        CustomProdAdapter adapter = new CustomProdAdapter(this, arrayList);
+
+        tTotal = findViewById(R.id.totalValueProd);
+
+        for (int i = 0; i < arrayList.size(); i++) {
+            total = total + arrayList.get(i).getAmount() * arrayList.get(i).getValue();
+        }
+
+        updateTotal(total);
+
+        ListView listView = findViewById(R.id.recycler_view_layour_recycler);
+        listView.setAdapter(adapter);
+    }
+
+    public void saveList(View view) {
+
     }
 
 }

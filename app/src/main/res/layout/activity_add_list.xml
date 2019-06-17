@@ -99,6 +99,7 @@
                 android:src="@drawable/ic_save_24dp"
                 app:fab_colorNormal="@color/colorPrimary"
                 fab:fab_label="Salvar"
+                android:onClick="saveList"
                 fab:fab_size="mini" />
 
             <com.github.clans.fab.FloatingActionButton

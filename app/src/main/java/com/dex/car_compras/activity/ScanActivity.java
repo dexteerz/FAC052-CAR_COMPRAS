@@ -22,6 +22,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.Result;
 
+import java.util.ArrayList;
+
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import static android.Manifest.permission.CAMERA;
@@ -32,6 +34,7 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
     private ZXingScannerView scannerView;
     private static int camId = Camera.CameraInfo.CAMERA_FACING_BACK;
     private Product product = new Product();
+    private ArrayList<Product> listProds = new ArrayList<Product>();
     private DatabaseReference firebase = FirebaseDatabase.getInstance().getReference();
 
     @Override
@@ -143,13 +146,28 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
 
                 if (product != null) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ScanActivity.this);
-                    builder.setTitle("RESULTADO: " + result.getText());
+                    builder.setTitle("COD. BAR.: " + result.getText());
 
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            boolean exist = false;
                             scannerView.resumeCameraPreview(ScanActivity.this);
-                            product.setProds(myResult, product.getName(),product.getCategory(),product.getValue(),1);
+                            listProds = Product.listProds();
+
+                            for (int i = 0; i < listProds.size(); i++) {
+                                if (listProds.get(i).getBarCode().equals(myResult)) {
+                                    int q = listProds.get(i).getAmount() + 1;
+                                    product.updateProds(i, q);
+                                    exist = true;
+                                    break;
+                                }
+                            }
+
+                            if (!exist) {
+                                product.newProds(myResult, product.getName(), product.getCategory(), product.getValue(), 1);
+                            }
+
                             scannerView.stopCameraPreview();
 
                             Intent returnIntent = new Intent();
@@ -173,7 +191,7 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
                 } else {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(ScanActivity.this);
-                    builder.setTitle("RESULTADO: ");
+                    builder.setTitle("COD. BAR.: " + result.getText());
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
