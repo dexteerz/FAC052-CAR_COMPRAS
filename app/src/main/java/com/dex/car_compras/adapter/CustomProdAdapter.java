@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.dex.car_compras.R;
 import com.dex.car_compras.activity.AddListActivity;
+import com.dex.car_compras.model.ListProduct;
 import com.dex.car_compras.model.Product;
 
 import java.lang.reflect.Array;
@@ -122,4 +123,5 @@ public class CustomProdAdapter extends ArrayAdapter<Product> {
 
         return convertView;
     }
+
 }

@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.dex.car_compras.model.ListProduct;
 import com.dex.car_compras.model.Product;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.Result;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 

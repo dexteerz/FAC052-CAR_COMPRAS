@@ -1,11 +1,17 @@
 package com.dex.car_compras.model;
 
+import com.dex.car_compras.config.AuthConfig;
+import com.dex.car_compras.helper.Base64Custom;
+import com.dex.car_compras.helper.DateUtil;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Product implements Serializable {
     private String barCode;
@@ -30,7 +36,6 @@ public class Product implements Serializable {
         this.amount = a;
     }
 
-    @Exclude
     public String getBarCode() {
         return barCode;
     }
@@ -71,6 +76,7 @@ public class Product implements Serializable {
         this.amount = amount;
     }
 
+    @Exclude
     public static ArrayList<Product> listProds() {
         return prods;
     }
@@ -86,4 +92,5 @@ public class Product implements Serializable {
     public static void setProds(ArrayList<Product> prods) {
         Product.prods = prods;
     }
+
 }
